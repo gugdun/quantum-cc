@@ -338,10 +338,8 @@ macro MOV? arg1, arg2
 end macro
 
 macro INT? arg
-      match [:r:], REG.arg
-            db 37h
-            db r
-      end match
+      db 37h
+      db arg
 end macro
 
 macro INC? arg
