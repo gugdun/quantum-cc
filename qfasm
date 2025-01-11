@@ -1,3 +1,0 @@
-#!/bin/sh
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-INCLUDE="$DIR/fasm;$INCLUDE" fasm2 -i "Include 'commands.inc'" "$@"

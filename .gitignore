@@ -1,0 +1,8 @@
+# objects
+*.o
+obj/**
+
+# binaries
+*.exe
+bin/**
+
