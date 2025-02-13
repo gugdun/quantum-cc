@@ -6,3 +6,7 @@ obj/**
 *.exe
 bin/**
 
+# bear
+.cache/
+compile_commands.json
+
