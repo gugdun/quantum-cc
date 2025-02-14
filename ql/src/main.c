@@ -3,13 +3,13 @@
 
 int main(int argc, char *argv[])
 {
-	printf(
-			"ql version %d.%d.%d by %s\n",
-			VERSION_MAJOR,
-			VERSION_MINOR,
-			VERSION_PATCH,
-			DEVELOPER
-	);
-	return 0;
+    printf(
+        "ql version %d.%d.%d by %s\n",
+        VERSION_MAJOR,
+        VERSION_MINOR,
+        VERSION_PATCH,
+        DEVELOPER
+    );
+    return 0;
 }
 
