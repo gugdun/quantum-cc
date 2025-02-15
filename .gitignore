@@ -10,3 +10,9 @@ bin/**
 .cache/
 compile_commands.json
 
+# ctags
+tags
+
+# vim
+*.swp
+

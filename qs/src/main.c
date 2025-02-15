@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <config.h>
+
+// Object file format
 
 typedef struct {
     uint16_t addr;
@@ -29,6 +32,29 @@ typedef struct {
     uint8_t section_count;
     section_t *sections;
 } object_t;
+
+// Architecture
+
+typedef enum {
+    REG,
+    ADDR,
+    VALUE
+} arg_type;
+
+typedef struct {
+    uint8_t code;
+    char *name;
+} reg_t;
+
+typedef struct {
+    uint8_t code;
+    bool half_byte;
+    uint8_t argc;
+    arg_type *args;
+    char *name;
+} command_t;
+
+// Compiler
 
 int main(int argc, char *argv[])
 {
