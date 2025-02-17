@@ -36,7 +36,7 @@ typedef struct {
 // Architecture
 
 typedef enum {
-    REG,
+    REG = 1,
     ADDR,
     VALUE
 } arg_type;
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
             .half_byte = false,
             .code = 0x00,
             .argc = 0,
-            .args = NULL,
+            .args = { 0 },
             .name = "NOP"
         },
         {
@@ -348,7 +348,7 @@ int main(int argc, char *argv[])
             .half_byte = false,
             .code = 0x35,
             .argc = 0,
-            .args = NULL,
+            .args = { 0 },
             .name = "RET"
         },
         {
@@ -383,7 +383,7 @@ int main(int argc, char *argv[])
             .half_byte = false,
             .code = 0xFF,
             .argc = 0,
-            .args = NULL,
+            .args = { 0 },
             .name = "HLT"
         }
     };

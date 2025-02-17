@@ -8,7 +8,10 @@ BIN			= ../bin
 CINCLUDES	= -Iinclude/
 CWARNINGS	= -Wall -Wextra
 CCFLAGS		= -O2 $(CINCLUDES) $(CWARNINGS)
-LDFLAGS		= 
+
+ifeq ($(OS), Windows_NT)
+    LDFLAGS	= -lmingw32
+endif
 
 SOURCES		:= $(wildcard $(SRC)/*.c)
 OBJECTS		:= $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SOURCES))
@@ -25,7 +28,7 @@ $(OBJ)/%.o: $(SRC)/%.c
 
 clean:
 	@echo "Deleting binaries..."
-	@rm -f $(BIN)/qs
+	@rm -f $(BIN)/qs*
 	@echo "Deleting objects..."
 	@rm -f $(OBJECTS)
 
