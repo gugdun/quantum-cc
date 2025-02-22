@@ -7,6 +7,7 @@ int parse_args(int argc, char *argv[])
 {
     state_t *state = get_state();
     enum parser_state s = INPUT_PATH;
+
     for (int i = 1; i < argc; i++)
     {
         switch (s)
@@ -39,13 +40,17 @@ int parse_args(int argc, char *argv[])
         }
     }
 
-    switch (s)
+    if (state->ifpath == NULL)
     {
-        case OUTPUT_PATH:
-            printf("Output file is not specified\n");
-            return 1;
-
-        default:
-            return 0;
+        printf("Input file is not specified\n");
+        return 1;
     }
+    else if (s == OUTPUT_PATH)
+    {
+        printf("Output file is not specified\n");
+        return 1;
+    }
+    else if (argc < 2) state->help = true;
+
+    return 0;
 }
