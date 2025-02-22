@@ -1,9 +1,14 @@
+#include <stddef.h>
 #include <state.h>
 
 state_t state;
 
 void init_state()
 {
+    state.help = false;
+    state.version = false;
+    state.ifpath = NULL;
+    state.ofpath = NULL;
     state.addr = 0x0000;
     state.org = 0x0000;
 
@@ -338,4 +343,3 @@ state_t *get_state()
 {
     return &state;
 }
-

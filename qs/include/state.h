@@ -4,6 +4,10 @@
 #include <arch.h>
 
 typedef struct {
+    bool help;
+    bool version;
+    char *ifpath;
+    char *ofpath;
     reg_t regs[16];
     command_t cmds[44];
     uint16_t addr;
@@ -14,4 +18,3 @@ void init_state();
 state_t *get_state();
 
 #endif // _STATE_H
-
