@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <state.h>
 #include <parser.h>
 #include <help.h>
@@ -17,6 +18,11 @@ int main(int argc, char *argv[])
     {
         print_help();
         return 0;
+    }
+    if (!s->ifpath)
+    {
+        printf("Input file is not specified\n");
+        return 1;
     }
 
     return 0;

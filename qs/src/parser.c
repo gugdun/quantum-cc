@@ -40,12 +40,7 @@ int parse_args(int argc, char *argv[])
         }
     }
 
-    if (state->ifpath == NULL)
-    {
-        printf("Input file is not specified\n");
-        return 1;
-    }
-    else if (s == OUTPUT_PATH)
+    if (s == OUTPUT_PATH)
     {
         printf("Output file is not specified\n");
         return 1;
