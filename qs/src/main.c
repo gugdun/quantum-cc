@@ -2,6 +2,7 @@
 #include <state.h>
 #include <args.h>
 #include <help.h>
+#include <parser.h>
 
 int main(int argc, char *argv[])
 {
@@ -24,6 +25,9 @@ int main(int argc, char *argv[])
         printf("Input file is not specified\n");
         return 1;
     }
+
+    object_t obj = (object_t) { 0 };
+    if (parse_file(s->ifpath, &obj)) return 1;
 
     return 0;
 }
