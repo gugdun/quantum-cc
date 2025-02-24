@@ -7,7 +7,7 @@ BIN			= ../bin
 
 CINCLUDES	= -Iinclude/
 CWARNINGS	= -Wall -Wextra
-CCFLAGS		= -O2 $(CINCLUDES) $(CWARNINGS)
+CCFLAGS		= -DDEBUG -O2 $(CINCLUDES) $(CWARNINGS)
 
 ifeq ($(OS), Windows_NT)
     LDFLAGS	= -lmingw32
