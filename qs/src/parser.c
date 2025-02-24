@@ -27,6 +27,7 @@ int parse_line(int number, char *line, object_t *obj)
     size_t len = strlen(cmd);
     if (cmd[len - 1] == ':')
     {
+        cmd[len - 1] = 0;
         add_tag(cmd, state->addr + state->org, obj);
         return 0;
     }
@@ -80,7 +81,7 @@ void add_tag(char *name, uint16_t addr, object_t *obj)
     tag_t *last_tag = &obj->tags[obj->tag_count];
     last_tag->addr = addr;
     last_tag->name_size = (uint8_t)strlen(name);
-    last_tag->name = (char *)malloc(last_tag->name_size);
+    last_tag->name = (char *)malloc(last_tag->name_size + 1);
     strcpy(last_tag->name, (const char*)name);
     ++obj->tag_count;
 #ifdef DEBUG
@@ -95,7 +96,7 @@ void add_link(char *name, uint16_t addr, object_t *obj)
     link_t *last_link = &obj->links[obj->link_count];
     last_link->addr = addr;
     last_link->name_size = (uint8_t)strlen(name);
-    last_link->name = (char *)malloc(last_link->name_size);
+    last_link->name = (char *)malloc(last_link->name_size + 1);
     strcpy(last_link->name, (const char*)name);
     ++obj->link_count;
 #ifdef DEBUG
