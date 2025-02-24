@@ -337,6 +337,20 @@ void init_state()
         .args = { 0 },
         .name = "HLT"
     };
+    state.cmds[44] = (command_t) {
+        .half_byte = true,
+        .code = 0x00,
+        .argc = 1,
+        .args = { BYTES },
+        .name = "DB"
+    };
+    state.cmds[45] = (command_t) {
+        .half_byte = true,
+        .code = 0x00,
+        .argc = 1,
+        .args = { WORDS },
+        .name = "DW"
+    };
 }
 
 state_t *get_state()

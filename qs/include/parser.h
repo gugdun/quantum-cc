@@ -1,12 +1,9 @@
 #ifndef _PARSER_H
 #define _PARSER_H
 
-enum parser_state
-{
-    INPUT_PATH,
-    OUTPUT_PATH
-};
+#include <obj.h>
 
-int parse_args(int argc, char *argv[]);
+int parse_file(char *path, object_t *obj);
 
 #endif // _PARSER_H
+

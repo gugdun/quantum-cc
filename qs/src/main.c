@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <state.h>
-#include <parser.h>
+#include <args.h>
 #include <help.h>
 
 int main(int argc, char *argv[])

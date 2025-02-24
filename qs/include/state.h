@@ -9,7 +9,7 @@ typedef struct {
     char *ifpath;
     char *ofpath;
     reg_t regs[16];
-    command_t cmds[44];
+    command_t cmds[46];
     uint16_t addr;
     uint16_t org;
 } state_t;

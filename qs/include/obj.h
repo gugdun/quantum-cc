@@ -18,6 +18,7 @@ typedef struct {
 typedef struct {
     uint16_t tag_count;
     uint16_t link_count;
+    uint16_t alloc_size;
     uint16_t size;
     tag_t *tags;
     link_t *links;
