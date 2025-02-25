@@ -84,8 +84,9 @@ int parse_file(char *path, object_t *obj)
     
     while ((read = qcc_getline(&line, &len, file)) != -1)
     {
-        strtok(line, "\r\n");
-        if (line && parse_line(number, line, obj))
+        if (read > 0 && (line[read - 1] == '\n' || line[read - 1])) line[read - 1] = 0;
+        if (read > 1 && line[read - 2] == '\r') line[read - 2] = 0;
+        if (parse_line(number, line, obj))
         {
             exit_code = 1;
             break;

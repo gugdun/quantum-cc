@@ -79,7 +79,7 @@ ssize_t qcc_getdelim(char **restrict lineptr, size_t *restrict n, int delimiter,
 			return -1;
 		}
 		bytes++;
-		if (bytes >= *n - 1) {
+		if (bytes >= (ssize_t)(*n - 1)) {
 			buf = realloc(*lineptr, *n + _GETDELIM_GROWBY);
 			if (buf == NULL) {
 				/* ENOMEM */
