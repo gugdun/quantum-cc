@@ -59,7 +59,9 @@ int parse_line(int number, char *line, object_t *obj)
     }
     else if (command->argc == 1)
     {
-        char *arg1 = strtok(NULL, "");
+        char *arg1 = NULL;
+        if (command->code == 0) arg1 = strtok(NULL, "");
+        else arg1 = strtok(NULL, DELIMITERS);
         size_t l1 = strlen(arg1);
 #ifdef DEBUG
         printf("TOKENS| cmd: %s, arg1: %s\n", cmd, arg1);
