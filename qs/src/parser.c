@@ -1,15 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <memory.h>
 #include <parser.h>
 #include <state.h>
+#include <getdelim.h>
 
-#define LINE_ALLOC_SIZE 32
+#define LINE_ALLOC_SIZE 256
 #define DATA_CHUNK_SIZE 256
 #define DELIMITERS " \n\t,"
 
-size_t _getline(char **lineptr, size_t *n, FILE *stream);
+void strtou(char *str);
 void add_tag(char *name, uint16_t addr, object_t *obj);
 void add_link(char *name, uint16_t addr, object_t *obj);
 void add_data(uint8_t *chunk, uint16_t size, object_t *obj);
@@ -17,11 +19,14 @@ void add_data(uint8_t *chunk, uint16_t size, object_t *obj);
 int parse_line(int number, char *line, object_t *obj)
 {
 #ifdef DEBUG
-    printf("%5d | %s", number, line);
+    printf("%5d | %s\n", number, line);
 #endif
     state_t *state = get_state();
     
-    char *cmd = strtok(line, DELIMITERS);
+    char *str = (char *)malloc(strlen(line) + 1);
+    strcpy(str, line);
+
+    char *cmd = strtok(str, DELIMITERS);
     if (!cmd || *cmd == ';') return 0;
     
     size_t len = strlen(cmd);
@@ -31,15 +36,34 @@ int parse_line(int number, char *line, object_t *obj)
         add_tag(cmd, state->addr + state->org, obj);
         return 0;
     }
-    
+
     char *arg1 = strtok(NULL, DELIMITERS);
     char *arg2 = strtok(NULL, DELIMITERS);
     char *arg3 = strtok(NULL, DELIMITERS);
+    
+    strtou(cmd);
+    command_t *command = NULL;
+    for (int i = 0; i < CMDS; ++i)
+    {
+        if (!strcmp(state->cmds[i].name, cmd))
+        {
+            command = &state->cmds[i];
+            break;
+        }
+    }
+
+    if (!command)
+    {
+        printf("Unknown command: %s\n", cmd);
+        free(str);
+        return 1;
+    }
 
 #ifdef DEBUG
     printf("TOKENS| cmd: %s, arg1: %s, arg2: %s, arg3: %s\n", cmd, arg1, arg2, arg3);
 #endif
     
+    free(str);
     return 0;
 }
 
@@ -58,9 +82,10 @@ int parse_file(char *path, object_t *obj)
     size_t len = LINE_ALLOC_SIZE;
     char *line = (char *)malloc(LINE_ALLOC_SIZE);
     
-    while ((read = _getline(&line, &len, file)) != -1)
+    while ((read = qcc_getline(&line, &len, file)) != -1)
     {
-        if (parse_line(number, line, obj))
+        strtok(line, "\r\n");
+        if (line && parse_line(number, line, obj))
         {
             exit_code = 1;
             break;
@@ -124,54 +149,12 @@ void add_data(uint8_t *chunk, uint16_t size, object_t *obj)
 #endif
 }
 
-size_t _getline(char **lineptr, size_t *n, FILE *stream) {
-    char *bufptr = NULL;
-    char *p = bufptr;
-    size_t size;
-    int c;
-
-    if (lineptr == NULL) {
-        return -1;
+void strtou(char *str)
+{
+    char *s = str;
+    while (*s)
+    {
+        *s = toupper((unsigned char)*s);
+        ++s;
     }
-    if (stream == NULL) {
-        return -1;
-    }
-    if (n == NULL) {
-        return -1;
-    }
-    bufptr = *lineptr;
-    size = *n;
-
-    c = fgetc(stream);
-    if (c == EOF) {
-        return -1;
-    }
-    if (bufptr == NULL) {
-        bufptr = malloc(128);
-        if (bufptr == NULL) {
-            return -1;
-        }
-        size = 128;
-    }
-    p = bufptr;
-    while(c != EOF) {
-        if (((size_t)p - (size_t)bufptr) > (size - 1)) {
-            size = size + 128;
-            bufptr = realloc(bufptr, size);
-            if (bufptr == NULL) {
-                return -1;
-            }
-        }
-        *p++ = c;
-        if (c == '\n') {
-            break;
-        }
-        c = fgetc(stream);
-    }
-
-    *p++ = '\0';
-    *lineptr = bufptr;
-    *n = size;
-
-    return p - bufptr - 1;
 }

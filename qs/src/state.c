@@ -351,6 +351,13 @@ void init_state()
         .args = { WORDS },
         .name = "DW"
     };
+    state.cmds[46] = (command_t) {
+        .half_byte = false,
+        .code = 0x00,
+        .argc = 1,
+        .args = { ORG },
+        .name = "ORG"
+    };
 }
 
 state_t *get_state()

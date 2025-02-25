@@ -9,7 +9,8 @@ typedef enum {
     ADDR,
     VALUE,
     BYTES,
-    WORDS
+    WORDS,
+    ORG
 } arg_type;
 
 typedef struct {

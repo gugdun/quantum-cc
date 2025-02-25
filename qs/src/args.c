@@ -8,7 +8,7 @@ int parse_args(int argc, char *argv[])
     state_t *state = get_state();
     enum parser_state s = INPUT_PATH;
 
-    for (int i = 1; i < argc; i++)
+    for (int i = 1; i < argc; ++i)
     {
         switch (s)
         {
