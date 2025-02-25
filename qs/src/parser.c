@@ -7,7 +7,7 @@
 #include <state.h>
 #include <getdelim.h>
 
-#define LINE_ALLOC_SIZE 256
+#define LINE_ALLOC_SIZE 32
 #define DATA_CHUNK_SIZE 256
 #define DELIMITERS " \n\t,"
 
@@ -23,10 +23,7 @@ int parse_line(int number, char *line, object_t *obj)
 #endif
     state_t *state = get_state();
     
-    char *str = (char *)malloc(strlen(line) + 1);
-    strcpy(str, line);
-
-    char *cmd = strtok(str, DELIMITERS);
+    char *cmd = strtok(line, DELIMITERS);
     if (!cmd || *cmd == ';') return 0;
     
     size_t len = strlen(cmd);
@@ -36,10 +33,6 @@ int parse_line(int number, char *line, object_t *obj)
         add_tag(cmd, state->addr + state->org, obj);
         return 0;
     }
-
-    char *arg1 = strtok(NULL, DELIMITERS);
-    char *arg2 = strtok(NULL, DELIMITERS);
-    char *arg3 = strtok(NULL, DELIMITERS);
     
     strtou(cmd);
     command_t *command = NULL;
@@ -55,15 +48,62 @@ int parse_line(int number, char *line, object_t *obj)
     if (!command)
     {
         printf("Unknown command: %s\n", cmd);
-        free(str);
         return 1;
     }
 
+    if (command->argc == 1)
+    {
+        char *arg1 = strtok(NULL, "");
+        size_t l1 = strlen(arg1);
 #ifdef DEBUG
-    printf("TOKENS| cmd: %s, arg1: %s, arg2: %s, arg3: %s\n", cmd, arg1, arg2, arg3);
+        printf("TOKENS| cmd: %s, arg1: %s\n", cmd, arg1);
 #endif
+
+        if (command->args[0] == ORG)
+        {
+            int base = 10;
+            if (l1 >= 2 && arg1[0] == '0' && arg1[1] == 'x')
+            {
+                arg1 += 2;
+                base = 16;
+            }
+            if (arg1[l1 - 1] == 'h')
+            {
+                arg1[l1 - 1] = 0;
+                base = 16;
+            }
+            if (arg1[l1 - 1] == 'o')
+            {
+                arg1[l1 - 1] = 0;
+                base = 8;
+            }
+            if (arg1[l1 - 1] == 'b')
+            {
+                arg1[l1 - 1] = 0;
+                base = 2;
+            }
+            state->org = (uint16_t)strtoul(arg1, NULL, base);
+            state->addr = 0;
+        }
+    }
+    else if (command->argc == 2)
+    {
+        char *arg1 = strtok(NULL, DELIMITERS);
+        char *arg2 = strtok(NULL, DELIMITERS);
+#ifdef DEBUG
+        printf("TOKENS| cmd: %s, arg1: %s, arg2: %s\n", cmd, arg1, arg2);
+#endif
+    }
+    else if (command->argc == 3)
+    {
+        char *arg1 = strtok(NULL, DELIMITERS);
+        char *arg2 = strtok(NULL, DELIMITERS);
+        char *arg3 = strtok(NULL, DELIMITERS);
+#ifdef DEBUG
+        printf("TOKENS| cmd: %s, arg1: %s, arg2: %s, arg3: %s\n", cmd, arg1, arg2, arg3);
+#endif
+    }
     
-    free(str);
     return 0;
 }
 
