@@ -25,5 +25,9 @@ typedef struct {
     uint8_t *data;
 } object_t;
 
+void add_tag(char *name, uint16_t addr, object_t *obj);
+void add_link(char *name, uint16_t addr, object_t *obj);
+void add_data(uint8_t *chunk, uint16_t size, object_t *obj);
+
 #endif // _OBJ_H
 
