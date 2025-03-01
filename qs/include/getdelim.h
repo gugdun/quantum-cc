@@ -2,11 +2,7 @@
 #define _GETDELIM_H
 
 #include <limits.h>
-
-#ifndef _POSIX_SOURCE
-typedef long ssize_t;
-#define SSIZE_MAX LONG_MAX
-#endif
+#include <stdint.h>
 
 ssize_t qcc_getdelim(char **restrict lineptr, size_t *restrict n, int delimiter,
     FILE *restrict stream);
